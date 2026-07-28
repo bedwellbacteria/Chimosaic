@@ -12,20 +12,20 @@ A taxonomy-free tool for detecting micro-substitution chimeras in full-length 16
 
 In low-complexity, host-dominated communities (within plants, insect guts, and similar systems where one or two taxa hold most of the reads, and particularly with PacBio long-read amplicons that add length and read depth), a specific artifact appears.
 
-Two abundant sequences **A** and **B** co-amplify. A rare sequence **C** shows up that is *entirely* A except for one to five SNPs, and the bases at those SNPs are carried, near-exclusively, by abundant B. It's a template-switching product, but a tiny one.
+Two abundant sequences **A** and **B** co-amplify. A rare sequence **C** shows up that is *entirely* A except for one to five SNPs, and the bases at those SNPs are carried, near-exclusively, by abundant B. 
 
 This falls outside the bimera model. Tools such as removeBimeraDenovo target two-parent chimeras with a detectable breakpoint, but a 1–5 SNP micro-substitution offers neither signal: there is no breakpoint to find, and the sequence sits too close to its parent for an abundance-ratio test to separate it from a genuine rare variant.
 
-Chimosaic asks, for each differing position: **who else carries this exact base, and how exclusively does it trace back to one abundant donor?** Exclusive provenance is suspicious. Mixed provenance suggests a genuinely common base and a real sequence.
+Chimosaic asks, for each differing position: **who else carries this exact base, and how exclusively does it trace back to one abundant donor?** A base only ever carried by an abundant donor is suspicious. 
 
 Chimosaic is meant to run alongside current chimera and sequence error removal tools such as removeBimeraDenovo. Currently it is tooled to run at the end of DADA2 or similar pipelines on polished sequence tables, but this can be toggled to suit the user. 
 
 
 ## How it works
 
-1. **No taxonomy in any decision.** "Most abundant" replaces "taxonomy" throughout. Nothing is automatically called real — abundance is a score, never a short-circuit.
+1. **No taxonomy in any decision.** "Most abundant" replaces "taxonomy" throughout. Nothing is automatically called real; abundance is scored for all. 
 2. **Per-SNP donor provenance attribution.** For each SNP, of all sequences carrying that minority base, what fraction of their reads belongs to the single most abundant carrier?
-3. **A fixed reference coordinate frame** built with `cmalign` against a bacterial 16S covariance model (Rfam RF00177). Consensus/match columns define the coordinate system; insert-state columns are treated as indels and dropped from SNP comparison. This gives coordinate stability across samples and O(N) scaling — no global de novo multiple alignment.
+3. **A fixed reference coordinate frame** built with `cmalign` against a bacterial 16S covariance model (Rfam RF00177). Consensus/match columns define the coordinate system; insert-state columns are treated as indels and dropped from SNP comparison. This gives coordinate stability across samples and O(N) scaling and does not require intensive de-novo multiple sequence alignment. 
 
 ## Requirements
 
@@ -114,14 +114,14 @@ The scoring weights (`W_SNP`, `W_ATTRIBUTION`, `W_DONOR_ABUNDANCE`, `W_COOCCURRE
 
 Two guards run before scoring, both deliberately fatal:
 
-- **Abundant ASVs missing from the alignment.** Gated on read mass, plus a check on whether any of the top-N ASVs by reads is absent. Losing ten dominant sequences matters far more than losing five hundred rare ones.
-- **Aligned sequences with no count column.** Gated on count, because the reads are exactly what's missing and can't be weighed. This is what pairing a subset count table with a full FASTA produces.
-
+- **Abundant ASVs missing from the alignment.** Gated on read mass, plus a check on whether any of the top-N ASVs by reads is absent.
+- **Aligned sequences with no count column.** Gated on count.
+  
 Both thresholds are configurable (`MAX_UNMATCHED_READ_FRACTION`, `UNMATCHED_TOP_N`, `MAX_UNCOUNTED_ALN_FRACTION`) but the defaults are tight on purpose.
 
 ## Performance notes
 
-The cmalign step requires signifciant memory and should be run on a cluster or serer. Once the coordinate frame is built, the remaining steps run comfortably with local compute.
+The cmalign step requires significant memory and should be run on a cluster or serer. Once the coordinate frame is built, the remaining steps run comfortably with local compute.
 
 The coordinate frame is cached to `asvs_cmalign.stk.matchcols.rds` in the working directory. Later runs reuse it and skip `cmalign` entirely — including on machines without Infernal installed. Keep runs on the same dataset in the same directory to benefit.
 
