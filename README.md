@@ -3,7 +3,7 @@ Micro-substitution chimera / PCR artifact detection for PacBio full-length 16S r
 
 A taxonomy-free tool for detecting micro-substitution chimeras in full-length 16S data, designed to run alongside DADA2's removeBimeraDenovo. 
 
-> **Status: v0.1.0 — early release.** The method is described in Bedwell et al 2026, ISME (DOI: https://doi.org/10.1093/ismejo/wrag228). Formal benchmarking against simulated and mock-community data is in progress and this page will be updated with results accordingly. 
+> **Status: v1.0.0 — early release.** The method is described in Bedwell et al 2026, ISME (DOI: https://doi.org/10.1093/ismejo/wrag228). Formal benchmarking against simulated and mock-community data is in progress and this page will be updated with results accordingly. 
 
 
 ---
@@ -134,12 +134,16 @@ Point errors introducing a novel base have the possibility to escape to REAL. If
 
 ## Citation
 
-If you use Chimosaic, please cite the preprint:
+If you use Chimosaic, please cite the paper: 
 
-> *Bedwell et al. Concurrent ecological and evolutionary processes contribute to mutualism breakdown between legumes and rhizobia. bioRxiv (2025). doi:10.64898/2025.12.02.691918*
+> *Bedwell et al. Concurrent ecological and evolutionary processes contribute to mutualism breakdown between legumes and rhizobia. bioRxiv (2025). doi: https://doi.org/10.1093/ismejo/wrag228
+
+And the DOI of Chimosaic: 10.5281/zenodo.22908009
 
 The specific version of this script used in the preprint is available via Zenodo: *10.5281/zenodo.17410935*
 This current version has been updated to be taxonomy free, and produces comparable results on the same data. 
+
+
 
 ## License
 
