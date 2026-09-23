@@ -3,7 +3,7 @@ Micro-substitution chimera / PCR artifact detection for PacBio full-length 16S r
 
 A taxonomy-free tool for detecting micro-substitution chimeras in full-length 16S data, designed to run alongside DADA2's removeBimeraDenovo. 
 
-> **Status: v0.1.0 — early release.** The method is described in Bedwell et al 2026, in review (BioRxiv DOI: https://doi.org/10.64898/2025.12.02.691918). Formal benchmarking against simulated and mock-community data is in progress.
+> **Status: v0.1.0 — early release.** The method is described in Bedwell et al 2026, ISME (DOI: https://doi.org/10.1093/ismejo/wrag228). Formal benchmarking against simulated and mock-community data is in progress.
 
 
 ---
